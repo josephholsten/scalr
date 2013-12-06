@@ -1,4 +1,3 @@
-
 import os
 import sys
 import time
@@ -369,7 +368,7 @@ class StatsPoller(basedaemon.BaseDaemon):
 
         clients = [cli.id for cli in session.query(db.clients.id).filter_by(status='Active').all()]
         if not clients:
-            logger.degub('Nothing to do')
+            logger.debug('Nothing to do')
             return
 
         hashs = dict((farm.id, farm.hash) for farm in session.query(

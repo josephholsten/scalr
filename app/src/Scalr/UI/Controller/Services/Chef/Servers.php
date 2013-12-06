@@ -71,10 +71,12 @@ class Scalr_UI_Controller_Services_Chef_Servers extends Scalr_UI_Controller
         $key = str_replace("\r\n", "\n", $this->getParam('authKey'));
         $vKey = str_replace("\r\n", "\n", $this->getParam('authVKey'));
 
+        # verify clients are authorized to make requests against chef server
         $chef = Scalr_Service_Chef_Client::getChef($this->getParam('url'), $this->getParam('userName'), $key);
         $response = $chef->listCookbooks();
         $chef = Scalr_Service_Chef_Client::getChef($this->getParam('url'), $this->getParam('userVName'), $vKey);
-        $response = $chef->getClient();
+        $response = $chef->getClient($this->getParam('userVName'));
+        
         if ($this->getParam('servId')) {
             $this->db->Execute('UPDATE services_chef_servers SET  `url` = ?, `username` = ?, `auth_key` = ?, `v_username` = ?, `v_auth_key` = ? WHERE `id` = ? AND env_id = ?', array(
                 $this->getParam('url'),
